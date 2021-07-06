@@ -12,3 +12,11 @@ CREATE TABLE `employee` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `udx_username` (`username`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT '员工表';
+-- 插入员工数据
+INSERT INTO `employee`
+(`username`,`password`,`sex`,`birthday`)
+VALUES
+(DEFAULT, '刘德华', '123456',1,128620800),
+(DEFAULT, '张曼玉', '123456',0,128620700),
+(DEFAULT, '林青霞', '123456',0,128620750),
+(DEFAULT, '张学友', '123456',1,128620850);

@@ -1,4 +1,4 @@
-package com.ranlay.Controller;
+package com.ranlay.Controller.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -46,6 +46,7 @@ public class JdbcController {
         String sql = "INSERT INTO `employee` (`username`,`password`,`sex`,`birthday`)" +
                 " VALUES ('黎明','654987','1'," + time + ")";
         jdbcTemplate.update(sql);
+
         return "addOk";
     }
 
