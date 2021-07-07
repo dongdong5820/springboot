@@ -29,3 +29,7 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+mybatis:
+  type-aliases-package: com.ranlay.pojo
+  mapper-locations: classpath:mybatis/mapper/*.xml

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--configuration core file-->
+<mapper namespace="com.ranlay.mapper.EmployeeMapper">
+    <select id="queryEmployeeList" resultType="Employee">
+        select * from employee;
+    </select>
+
+    <select id="queryEmployeeById" resultType="Employee" parameterType="int">
+        select * from employee where id = #{id}
+    </select>
+
+    <insert id="addEmployee">
+        insert into employee (username,password,sex,birthday)
+        values (#{username},#{password},#{sex},#{birthday})
+    </insert>
+
+    <update id="updateEmployee">
+        update employee set
+        username=#{username},
+        password=#{password},
+        sex=#{sex},
+        birthday=#{birthday}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteEmployee">
+        delete from employee where id=#{id}
+    </delete>
+</mapper>
