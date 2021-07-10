@@ -1,10 +1,12 @@
 package com.ranlay;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.ranlay.service.ExecutionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,6 +15,8 @@ import java.sql.SQLException;
 class SpringbootApplicationTests {
     @Autowired
     DataSource dataSource;
+    @Resource
+    ExecutionService executionService;
 
     @Test
     void contextLoads() throws SQLException {
@@ -27,6 +31,17 @@ class SpringbootApplicationTests {
         System.out.println("druidDataSource 数据源初始化连接数：" + druidDataSource.getInitialSize());
 
         connection.close();
+    }
+
+    @Test
+    void testExecution() {
+        executionService.add("1234");
+        System.out.println("======================");
+
+        executionService.test();
+        System.out.println("======================");
+
+        executionService.hello("玉麒麟卢俊义");
     }
 
 }

@@ -23,6 +23,12 @@
 
     <!-- 依赖 -->
     <dependencies>
+        <!-- 使用AspectJ切面 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
         <!-- mybatis依赖 -->
         <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
         <dependency>
