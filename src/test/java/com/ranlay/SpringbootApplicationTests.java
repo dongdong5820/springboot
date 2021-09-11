@@ -1,6 +1,7 @@
 package com.ranlay;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.ranlay.Utils.DateUtil;
 import com.ranlay.service.ExecutionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ class SpringbootApplicationTests {
     ExecutionService executionService;
 
     @Test
-    void contextLoads() throws SQLException {
+    public void contextLoads() throws SQLException {
         // com.zaxxer.hikari.HikariDataSource
         System.out.println("数据源类: " + dataSource.getClass());
         Connection connection = dataSource.getConnection();
@@ -33,8 +34,11 @@ class SpringbootApplicationTests {
         connection.close();
     }
 
+    /**
+     * 测试切面 Aspect
+     */
     @Test
-    void testExecution() {
+    public void testExecution() {
         executionService.add("1234");
         System.out.println("======================");
 
@@ -44,4 +48,12 @@ class SpringbootApplicationTests {
         executionService.hello("玉麒麟卢俊义");
     }
 
+    /**
+     * 测试日期类
+     */
+    @Test
+    public void testDateUtils() {
+        Long time = DateUtil.getYearStartTime(2011);
+        System.out.println(time);
+    }
 }
