@@ -1,7 +1,7 @@
 package com.ranlay;
 
-import com.ranlay.Utils.DigestUtil;
-import com.ranlay.Utils.RandomUtil;
+import com.ranlay.core.utils.DigestUtil;
+import com.ranlay.core.utils.RandomUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

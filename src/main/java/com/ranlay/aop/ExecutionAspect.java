@@ -19,7 +19,7 @@ public class ExecutionAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionAspect.class);
 
     // 定义切点
-    @Pointcut("execution(public * com.ranlay.service.ExecutionService.*(..))")
+    @Pointcut("execution(public * com.ranlay.core.service.ExecutionService.*(..))")
     public void executePoint() {}
 
     // 环绕通知
@@ -39,13 +39,13 @@ public class ExecutionAspect {
     }
 
     // 前置通知
-    @Before("execution(public * com.ranlay.service.ExecutionService.*(..))")
+    @Before("execution(public * com.ranlay.core.service.ExecutionService.*(..))")
     public void executeBefore() {
         System.out.println("核心方法调用之前，executeBefore方法被执行！！！");
     }
 
     // 后置通知
-    @After("execution(public * com.ranlay.service.ExecutionService.test(..))")
+    @After("execution(public * com.ranlay.core.service.ExecutionService.test(..))")
     public void executeAfter() {
         System.out.println("核心方法调用之后，executeAfter方法被执行！！！");
     }

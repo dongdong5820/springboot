@@ -1,4 +1,4 @@
-package com.ranlay.Utils;
+package com.ranlay.core.utils;
 
 import java.util.List;
 import java.util.stream.Collectors;

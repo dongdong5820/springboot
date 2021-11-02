@@ -1,4 +1,4 @@
-package com.ranlay.service;
+package com.ranlay.core.service;
 
 /**
  * @author: Ranlay.su

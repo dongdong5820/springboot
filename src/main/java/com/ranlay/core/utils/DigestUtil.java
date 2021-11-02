@@ -1,4 +1,4 @@
-package com.ranlay.Utils;
+package com.ranlay.core.utils;
 
 import org.springframework.util.DigestUtils;
 
