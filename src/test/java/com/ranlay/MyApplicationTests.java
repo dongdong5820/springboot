@@ -2,6 +2,7 @@ package com.ranlay;
 
 import com.ranlay.core.utils.DigestUtil;
 import com.ranlay.core.utils.RandomUtil;
+import com.ranlay.core.utils.StringUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -26,5 +27,13 @@ public class MyApplicationTests {
         System.out.println(headers);
         String sign = DigestUtil.generateSign(headers);
         System.out.println(sign);
+    }
+
+    @Test
+    public void testStringFunc() {
+        String str = "projects/oneplus-community/messages/0:1636028290551095%4ebccc2f4ebccc2f";
+        String value = "/";
+        String s = StringUtil.lastSubstring(str, value);
+        System.out.println(s);
     }
 }
