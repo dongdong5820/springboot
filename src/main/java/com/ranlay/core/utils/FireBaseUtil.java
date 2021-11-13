@@ -12,7 +12,6 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -170,9 +169,12 @@ public class FireBaseUtil {
                     }
                 }
             } catch (FirebaseMessagingException e) {
+                for (String token : chunk) {
+                    failedTokenMap.put(token, String.format("[%s]%s", e.getErrorCode(), e.getMessage()));
+                }
                 log.error(String.format("push message error. token: %s", chunk), e);
             }
         });
-        System.out.println(String.format("多个设备推送结果, failedTokenMap: %s", failedTokenMap));
+        System.out.println(String.format("多个设备推送结果, failedTokenMap: %s", JSONUtils.toJSONString(failedTokenMap)));
     }
 }

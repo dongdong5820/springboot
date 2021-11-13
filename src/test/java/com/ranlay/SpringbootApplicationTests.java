@@ -6,11 +6,14 @@ import com.ranlay.core.service.ExecutionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.unit.DataUnit;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @SpringBootTest
 class SpringbootApplicationTests {
@@ -53,7 +56,18 @@ class SpringbootApplicationTests {
      */
     @Test
     public void testDateUtils() {
-        Long time = DateUtil.getYearStartTime(2011);
-        System.out.println(time);
+        long millis = System.currentTimeMillis();
+//        String formatStr = "yyyy-MM-dd HH:mm:ss";
+        String formatStr = "H";
+        List<String> timezones = Arrays.asList(
+                "Asia/Hong_Kong",
+                "America/Chicago",
+                "Africa/Casablanca",
+                "Asia/Seoul",
+                "Europe/London"
+        );
+        timezones.forEach(tz -> {
+            System.out.println(tz + "\t" + DateUtil.convertTimeToString(millis, formatStr, tz));
+        });
     }
 }

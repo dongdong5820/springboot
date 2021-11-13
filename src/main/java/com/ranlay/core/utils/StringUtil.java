@@ -7,6 +7,23 @@ package com.ranlay.core.utils;
  * @version: 1.0.0
  */
 public class StringUtil {
+
+    /**
+     * 判断是否为null或空字符串
+     * @param o
+     * @return
+     */
+    public static boolean isEmpty(Object o) {
+        if(o == null || "".equals(o)){
+            return true;
+        }
+        if(o instanceof String){
+            return ((String)o).trim().isEmpty();
+        }else{
+            return o.toString().trim().isEmpty();
+        }
+    }
+
     /**
      * 获取匹配字符（串）的索引值
      * @param str

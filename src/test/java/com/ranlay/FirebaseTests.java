@@ -68,6 +68,7 @@ public class FirebaseTests {
         initFirebaseSDK();
         log.info("firebaseApp已经初始化了");
         List<String> tokenList = Arrays.asList(
+                "d220mWb-Tx-Axj2E9_rSD0:APA91bFBnB3QAQfC42j_vl_WPFERj3m3Exx8IYwo7XVU4Bf83vAkW4kHe-Xlu5jeFviJeZkZXiU1TvFSySxngnGGIgRAc0BUWbINrqWUejg-ap5pBSpVPVCU2WQdSsP8Z8earNCxS1se",
                 "adfsasdgfaywerywrtywrt",
                 "ePsIp0x4T7-rCNhuXzcBDS:APA91bHZhtBT32mlFMB_r3xxAG13ZFlCaKz9U6Li7ziF-t7uabxbRkf0xT2OQ5iac3aRlX5_2EL-29KDWMkZJKsS-dKcPsPNFTQXWPX3W94wP0g4e54TKNhSweQ-B9XVN79BqLbfCc1J",
                 "asdfhetyiuryuityuoitu",

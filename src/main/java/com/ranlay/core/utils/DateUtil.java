@@ -1,8 +1,15 @@
 package com.ranlay.core.utils;
 
+import org.springframework.util.Assert;
+
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * @author: Ranlay.su
@@ -166,5 +173,19 @@ public class DateUtil {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         return calendar.getTimeInMillis();
+    }
+
+    /**
+     * 将Long类型的时间戳转换成String 类型的时间格式，时间格式为：yyyy-MM-dd HH:mm:ss
+     * @param time  时间戳
+     * @param formatStr 时间格式
+     * @param timeZone 时区:不传时区为系统默认时区
+     * @return
+     */
+    public static String convertTimeToString(Long time, String formatStr, String timeZone){
+        Assert.notNull(time, "time is null");
+        ZoneId zoneId = StringUtil.isEmpty(timeZone) ? ZoneId.systemDefault() : ZoneId.of(timeZone);
+        DateTimeFormatter ftf = DateTimeFormatter.ofPattern(formatStr);
+        return ftf.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(time), zoneId));
     }
 }
