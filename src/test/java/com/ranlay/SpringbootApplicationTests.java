@@ -4,19 +4,21 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.ranlay.core.utils.DateUtil;
 import com.ranlay.core.service.ExecutionService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.unit.DataUnit;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @SpringBootTest
 class SpringbootApplicationTests {
+    private static final Logger logger = LoggerFactory.getLogger(SpringbootApplicationTests.class);
+
     @Autowired
     DataSource dataSource;
     @Resource
@@ -60,14 +62,39 @@ class SpringbootApplicationTests {
 //        String formatStr = "yyyy-MM-dd HH:mm:ss";
         String formatStr = "H";
         List<String> timezones = Arrays.asList(
-                "Asia/Hong_Kong",
-                "America/Chicago",
+                "Australian/Canberra",
                 "Africa/Casablanca",
-                "Asia/Seoul",
-                "Europe/London"
+                "Africa/Nairobi",
+                "America/Anchorage",
+                "America/Argentina/Mendoza",
+                "America/Bogota",
+                "America/Chicago",
+                "America/Los_Angeles",
+                "America/Mexico_City",
+                "America/New_York",
+                "America/Phoenix",
+                "America/Sao_Paulo",
+                "Asia/Bangkok",
+                "Asia/Dhaka",
+                "Asia/Hong_Kong",
+                "Asia/Kathmandu",
+                "Asia/Kolkata",
+                "Asia/Singapore",
+                "Asia/Tashkent",
+                "Asia/Yekaterinburg",
+                "Australia/Sydney",
+                "Europe/Amsterdam",
+                "Europe/Athens",
+                "Europe/London",
+                "Europe/Moscow"
         );
         timezones.forEach(tz -> {
-            System.out.println(tz + "\t" + DateUtil.convertTimeToString(millis, formatStr, tz));
+            try {
+                String localTime = DateUtil.convertTimeToString(millis, formatStr, tz);
+                System.out.println(tz + "\t" + localTime);
+            } catch (Exception e) {
+                logger.info(String.format("%s error. %s", tz, e.getMessage()));
+            }
         });
     }
 }

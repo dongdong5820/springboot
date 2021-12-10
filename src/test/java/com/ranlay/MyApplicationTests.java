@@ -35,5 +35,8 @@ public class MyApplicationTests {
         String value = "/";
         String s = StringUtil.lastSubstring(str, value);
         System.out.println(s);
+
+        String format = String.format("%d-%d", 12, "哈哈哈");
+        System.out.println(format);
     }
 }
