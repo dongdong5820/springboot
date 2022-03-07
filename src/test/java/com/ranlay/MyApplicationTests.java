@@ -33,6 +33,8 @@ public class MyApplicationTests {
     public void testStringFunc() {
         String str = "projects/oneplus-community/messages/0:1636028290551095%4ebccc2f4ebccc2f";
         String value = "/";
+        System.out.println(str.hashCode());
+
         String s = StringUtil.lastSubstring(str, value);
         System.out.println(s);
 
