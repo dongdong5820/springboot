@@ -2,11 +2,13 @@ package com.ranlay;
 
 import com.ranlay.core.utils.DigestUtil;
 import com.ranlay.core.utils.RandomUtil;
+import com.ranlay.core.utils.RegexUtils;
 import com.ranlay.core.utils.StringUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,5 +42,13 @@ public class MyApplicationTests {
 
         String format = String.format("%d-%d", 12, "哈哈哈");
         System.out.println(format);
+    }
+
+    @Test
+    public void testMatchValue() {
+        String content = "<div><a data-type=\"@\" data-value=\"159874569\" rel=\"noopener noreferrer\">@春笋测试</a> cvnjjggffhhjjhhgg</div>";
+        String REGEX_TAG_AT = "<a data-type=\"@\" data-value=\"(\\d+)\"( rel=\"noopener noreferrer\"){0,1}>";
+        List<String> matchValue = RegexUtils.matchValue(REGEX_TAG_AT, content);
+        System.out.println(matchValue);
     }
 }
