@@ -5,6 +5,8 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.*;
+import com.ranlay.enums.PushMsgEnum;
+import org.apache.ibatis.annotations.Case;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,26 +89,39 @@ public class FireBaseUtil {
     private static String getBody(String title, String content) {
         // 构建push消息内容
         Map<String, String> body = new HashMap<>(16);
-        body.put("messageTitle", title);
+     /*   body.put("messageTitle", title);
         body.put("content", content);
-//        body.put("image","https://static.oneplus.cn/data/attachment/avatar/202104/16/205638fs3zsbto4c9bcbmq.jpg");
+        body.put("image","https://static.oneplus.cn/data/attachment/avatar/202104/16/205638fs3zsbto4c9bcbmq.jpg");
         body.put("jumpType", "1");
         body.put("circleId", "4");
         body.put("articleId", "");
-        body.put("connectId", "4");
+        body.put("connectId", "4");*/
         body.put("trackerId", "official_15");
+//        body.put("deeplink", "opluscommunity://forums.oneplus.com/app/thread?threadId=1017584995619831812");
+        body.put("deeplink", "opluscommunity://forums.oneplus.com/app/message/chat?receiverUid=1345690597");
+        return JSONUtils.toJSONString(body);
+    }
+
+    /**
+     * 获取push内容body
+     * @param pushConfig
+     * @return
+     */
+    private static String getBody(PushMsgEnum.PushConfig pushConfig) {
+        String domain = "opluscommunity://forums.oneplus.com";
+        Map<String, String> body = new HashMap<>(16);
+        body.put("trackerId", pushConfig.getTrackerId());
+        body.put("link", domain + pushConfig.getLink());
         return JSONUtils.toJSONString(body);
     }
 
     /**
      * 单设备推送
-     * @param appName      应用的名字
-     * @param token        注册token
-     * @param title        推送题目
-     * @param content      推送内容
-     * @return
+     * @param appName
+     * @param token
+     * @param pushConfig
      */
-    public static void pushSingle(String appName, String token, String title, String content) {
+    public static void pushSingle(String appName, String token, PushMsgEnum.PushConfig pushConfig) {
         //获取实例
         FirebaseApp firebaseApp = firebaseAppMap.get(appName);
         //实例为空的情况
@@ -115,13 +130,47 @@ public class FireBaseUtil {
         }
 
         Map<String, String> failedTokenMap = new HashMap<>();
-        String body = getBody(title, content);
-        // 构建message
-        Message message = Message.builder()
-                .putData("type", "0")
-                .putData("body", body)
-                .setToken(token)
-                .build();
+        String body = getBody(pushConfig);
+        System.out.println(String.format("data.body: %s", body));
+        Message message;
+        switch (pushConfig.getType()) {
+            case NOTIFICATION_MESSAGE:
+                // 构建android通知栏消息
+                {
+                    AndroidNotification notification = AndroidNotification.builder()
+                            .setTitle(pushConfig.getTitle())
+                            .setBody(pushConfig.getContent())
+//                        .setImage("https://storage.wanyol.com/oplus/upload/image/app/avatar/20220310/7950965431/1019114994084610055/1019114994084610055.jpg")
+                            .setClickAction("com.oplus.community.oversea.action.PUSH")
+                            .setEventTimeInMillis(System.currentTimeMillis())
+                            .build();
+                    AndroidConfig androidConfig = AndroidConfig.builder()
+                            .setNotification(notification)
+                            .setRestrictedPackageName("com.oneplus.orbit")
+                            .build();
+                    message = Message.builder()
+                            .setAndroidConfig(androidConfig)
+                            .putData("clientAction", pushConfig.getClientAction())
+                            .putData("body", body)
+                            .setToken(token)
+                            .build();
+                }
+                break;
+            case DATA_MESSAGE:
+                // 构建透传消息(通知客户端刷新消息小红点)
+                {
+                    message = Message.builder()
+                        .putData("clientAction", pushConfig.getClientAction())
+                        .setToken(token)
+                        .build();
+                }
+                break;
+            default:
+                message = Message.builder()
+                    .putData("clientAction", pushConfig.getClientAction())
+                    .setToken(token)
+                    .build();
+        }
         try {
             //发送后，返回messageID
             String response = FirebaseMessaging.getInstance(firebaseApp).send(message);

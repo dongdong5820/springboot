@@ -7,6 +7,8 @@ import com.ranlay.core.utils.StringUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +37,6 @@ public class MyApplicationTests {
     public void testStringFunc() {
         String str = "projects/oneplus-community/messages/0:1636028290551095%4ebccc2f4ebccc2f";
         String value = "/";
-        System.out.println(str.hashCode());
 
         String s = StringUtil.lastSubstring(str, value);
         System.out.println(s);
@@ -50,5 +51,19 @@ public class MyApplicationTests {
         String REGEX_TAG_AT = "<a data-type=\"@\" data-value=\"(\\d+)\"( rel=\"noopener noreferrer\"){0,1}>";
         List<String> matchValue = RegexUtils.matchValue(REGEX_TAG_AT, content);
         System.out.println(matchValue);
+    }
+
+    @Test
+    public void testDate() {
+        // 毫秒转日期
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_M");
+        Long time = System.currentTimeMillis() + 30*24*3600*1000;
+        Date date = new Date(time);
+        System.out.println(simpleDateFormat.format(date));
+
+//        String str = "fdadsfjalfdalfd";
+//        String str = "c1490648_f4e7_4164_8d04_c4ab38dcc7bd";
+        String str = "a2963dbad46a4fc5b015637dcb17e01c";
+        System.out.println(Math.abs(str.hashCode()%100));
     }
 }

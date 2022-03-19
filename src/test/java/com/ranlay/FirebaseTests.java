@@ -2,6 +2,7 @@ package com.ranlay;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.ranlay.core.utils.FireBaseUtil;
+import com.ranlay.enums.PushMsgEnum;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,11 +57,8 @@ public class FirebaseTests {
     public void testPushSingle() {
         initFirebaseSDK();
         log.info("firebaseApp已经初始化了");
-//        String token = "ePsIp0x4T7-rCNhuXzcBDS:APA91bHZhtBT32mlFMB_r3xxAG13ZFlCaKz9U6Li7ziF-t7uabxbRkf0xT2OQ5iac3aRlX5_2EL-29KDWMkZJKsS-dKcPsPNFTQXWPX3W94wP0g4e54TKNhSweQ-B9XVN79BqLbfCc1J";
-        String token = "fasdfafasfasfd";
-//        String title = "Survey Time! Share your favorite OnePlus memories";
-        String content = "we've started the behind-the-scenes work to prepare the 8th Anniversary celebrations.";
-        FireBaseUtil.pushSingle(appName, token, null, content);
+        String token = "fQkClKq3S8SbFVcWYRPVKI:APA91bE_OxrF-WtWayeLOtba6XxaGP1Q0gV48y69lAQ9h5gsJccSQaZ9xO2BfnlR2ctmWbMEBaxKGD55wmTNeo2dEv0WVddhiuTV2Q4B2Y0DafoC6fN9QhS7e5aAKAgHsn_o4hZXD9Uh";
+        FireBaseUtil.pushSingle(appName, token, PushMsgEnum.PushConfig.NEW_FOLLOWER);
     }
 
     @Test
