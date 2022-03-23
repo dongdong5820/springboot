@@ -63,7 +63,7 @@ public class MyApplicationTests {
 
 //        String str = "fdadsfjalfdalfd";
 //        String str = "c1490648_f4e7_4164_8d04_c4ab38dcc7bd";
-        String str = "a2963dbad46a4fc5b015637dcb17e01c";
+        String str = "8dd8da845d594c26be653b9e19a19775";
         System.out.println(Math.abs(str.hashCode()%100));
     }
 }

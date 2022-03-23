@@ -57,8 +57,14 @@ public class FirebaseTests {
     public void testPushSingle() {
         initFirebaseSDK();
         log.info("firebaseApp已经初始化了");
-        String token = "fQkClKq3S8SbFVcWYRPVKI:APA91bE_OxrF-WtWayeLOtba6XxaGP1Q0gV48y69lAQ9h5gsJccSQaZ9xO2BfnlR2ctmWbMEBaxKGD55wmTNeo2dEv0WVddhiuTV2Q4B2Y0DafoC6fN9QhS7e5aAKAgHsn_o4hZXD9Uh";
+        String token = "fvrl0pK-TfaKoV65yn-e2_:APA91bHQouulukllUYI4sCA7XKgGrgGXrpZFJWayxTEhWYtQDwPS4dcVnW_H2heXkZ77lIYrUGvySdxShklyuOte6tW8-ojGfv7DRj3hQMCS6cowHu6mjNVfuhca9sztthV5Xdr7zDaM";
+        FireBaseUtil.pushSingle(appName, token, PushMsgEnum.PushConfig.NEW_PRIVATE_CHAT);
+        FireBaseUtil.pushSingle(appName, token, PushMsgEnum.PushConfig.NEW_COMMENT);
+        FireBaseUtil.pushSingle(appName, token, PushMsgEnum.PushConfig.NEW_REPLY);
+        FireBaseUtil.pushSingle(appName, token, PushMsgEnum.PushConfig.NEW_COMMENT_AT);
         FireBaseUtil.pushSingle(appName, token, PushMsgEnum.PushConfig.NEW_FOLLOWER);
+        FireBaseUtil.pushSingle(appName, token, PushMsgEnum.PushConfig.NEW_THREAD_LIKE);
+//        FireBaseUtil.pushSingle(appName, token, PushMsgEnum.PushConfig.NOTICE_FLUSH);
     }
 
     @Test

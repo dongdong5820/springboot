@@ -85,7 +85,7 @@ public class PushMsgEnum {
         NEW_FOLLOWER(
                 "",
                 "206.com just followed you!",
-                "/app/user?userId=54",
+                "/app/user?userId=1345690597",
                 "New_follower",
                 "1000",
                 Type.NOTIFICATION_MESSAGE
@@ -143,19 +143,30 @@ public class PushMsgEnum {
                 "206.com sent you a message!",
                 "/app/message/chat?receiverUid=54",
                 "New_private_chat",
-                "1000",
+                "1001",
                 Type.NOTIFICATION_MESSAGE
         ),
         /**
          * 官方消息
          */
         OFFICIAL_NOTICE(
-                "this is a test",
-                "there are many people!",
-                "?url=https://www.baidu.com",
-                "official_12",
-                "1000",
+                "",
+                "4444",
+                "https://forums.oneplus.com/app/thread?threadId=1027003998561894402",
+                "official_25",
+                "1002",
                 Type.NOTIFICATION_MESSAGE
+        ),
+        /**
+         * 通知客户端刷新消息小红点
+         */
+        NOTICE_FLUSH(
+                "",
+                "",
+                "",
+                "",
+                "2000",
+                Type.DATA_MESSAGE
         ),
         ;
 

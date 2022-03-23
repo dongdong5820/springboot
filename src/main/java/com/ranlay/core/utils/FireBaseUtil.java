@@ -26,6 +26,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version: 1.0.0
  */
 public class FireBaseUtil {
+    /**
+     * 点击消息的动作
+     */
+    private static String CLICK_ACTION = "com.oplus.community.oversea.action.PUSH";
+    /**
+     * 在firebase注册的包名
+     */
+    private static String PACKAGE_NAME = "com.oneplus.orbit";
+
     private static final Logger log = LoggerFactory.getLogger(FireBaseUtil.class);
 
     //存放多个实例的Map
@@ -111,7 +120,13 @@ public class FireBaseUtil {
         String domain = "opluscommunity://forums.oneplus.com";
         Map<String, String> body = new HashMap<>(16);
         body.put("trackerId", pushConfig.getTrackerId());
-        body.put("link", domain + pushConfig.getLink());
+        switch (pushConfig) {
+            case OFFICIAL_NOTICE:
+                body.put("link", pushConfig.getLink());
+                break;
+            default:
+                body.put("link", domain + pushConfig.getLink());
+        }
         return JSONUtils.toJSONString(body);
     }
 
@@ -141,12 +156,13 @@ public class FireBaseUtil {
                             .setTitle(pushConfig.getTitle())
                             .setBody(pushConfig.getContent())
 //                        .setImage("https://storage.wanyol.com/oplus/upload/image/app/avatar/20220310/7950965431/1019114994084610055/1019114994084610055.jpg")
-                            .setClickAction("com.oplus.community.oversea.action.PUSH")
+                            .setClickAction(CLICK_ACTION)
                             .setEventTimeInMillis(System.currentTimeMillis())
                             .build();
                     AndroidConfig androidConfig = AndroidConfig.builder()
                             .setNotification(notification)
-                            .setRestrictedPackageName("com.oneplus.orbit")
+                            .setCollapseKey(PACKAGE_NAME)
+                            .setRestrictedPackageName(PACKAGE_NAME)
                             .build();
                     message = Message.builder()
                             .setAndroidConfig(androidConfig)
@@ -156,20 +172,16 @@ public class FireBaseUtil {
                             .build();
                 }
                 break;
-            case DATA_MESSAGE:
+            default:
+                // DATA_MESSAGE
                 // 构建透传消息(通知客户端刷新消息小红点)
                 {
                     message = Message.builder()
-                        .putData("clientAction", pushConfig.getClientAction())
-                        .setToken(token)
-                        .build();
+                            .putData("clientAction", pushConfig.getClientAction())
+                            .setToken(token)
+                            .build();
                 }
-                break;
-            default:
-                message = Message.builder()
-                    .putData("clientAction", pushConfig.getClientAction())
-                    .setToken(token)
-                    .build();
+            break;
         }
         try {
             //发送后，返回messageID
