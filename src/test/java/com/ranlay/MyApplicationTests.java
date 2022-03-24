@@ -8,10 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: Ranlay.su
@@ -21,6 +18,7 @@ import java.util.Map;
  */
 @SpringBootTest
 public class MyApplicationTests {
+    private Integer duration = 30;
 
     @Test
     public void testGenerateSign() {
@@ -56,13 +54,24 @@ public class MyApplicationTests {
     @Test
     public void testDate() {
         // 毫秒转日期
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_M");
-        Long time = System.currentTimeMillis() + 30*24*3600*1000;
-        Date date = new Date(time);
-        System.out.println(simpleDateFormat.format(date));
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy_M");
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long time = System.currentTimeMillis();
+        System.out.println("当前时间: " + simpleDateFormat2.format(new Date()));
+        Calendar calc = Calendar.getInstance();
+        calc.add(Calendar.DATE, -duration);
+        Date date = calc.getTime();
+        time = date.getTime();
+        System.out.println(duration + "天前的时间戳(毫秒)：" + time);
+        System.out.println(duration + "天前的时间：" + simpleDateFormat2.format(date));
 
-//        String str = "fdadsfjalfdalfd";
-//        String str = "c1490648_f4e7_4164_8d04_c4ab38dcc7bd";
+        Long fuid = 1027856867984932868L;
+        Long tuid = 1027857012168327168L;
+        long max = Math.max(fuid, tuid);
+        long min = Math.min(fuid, tuid);
+        System.out.println("max: " + max);
+        System.out.println("min: " + min);
+
         String str = "8dd8da845d594c26be653b9e19a19775";
         System.out.println(Math.abs(str.hashCode()%100));
     }
