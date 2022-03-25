@@ -1,4 +1,4 @@
-package com.ranlay.mapper;
+package com.ranlay.mysql.mapper;
 
 import com.ranlay.pojo.Employee;
 import org.apache.ibatis.annotations.Mapper;

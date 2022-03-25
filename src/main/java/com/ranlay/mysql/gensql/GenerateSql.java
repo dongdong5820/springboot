@@ -1,4 +1,4 @@
-package com.ranlay.core.utils;
+package com.ranlay.mysql.gensql;
 
 /**
  * @author: Ranlay.su

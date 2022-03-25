@@ -1,9 +1,11 @@
 package com.ranlay;
 
+import com.alibaba.fastjson.JSON;
 import com.ranlay.core.utils.DigestUtil;
 import com.ranlay.core.utils.RandomUtil;
 import com.ranlay.core.utils.RegexUtils;
 import com.ranlay.core.utils.StringUtil;
+import com.ranlay.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -74,5 +76,17 @@ public class MyApplicationTests {
 
         String str = "8dd8da845d594c26be653b9e19a19775";
         System.out.println(Math.abs(str.hashCode()%100));
+    }
+
+    @Test
+    public void testFastJson() {
+        User jack = User.builder()
+                .uid(12L)
+                .userName("jack")
+                .height(175)
+                .age(new Date())
+                .value("{}")
+                .build();
+        System.out.println("user: " + JSON.toJSONString(jack));
     }
 }
