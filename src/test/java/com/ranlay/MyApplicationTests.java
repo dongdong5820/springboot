@@ -74,7 +74,7 @@ public class MyApplicationTests {
         System.out.println("max: " + max);
         System.out.println("min: " + min);
 
-        String str = "8dd8da845d594c26be653b9e19a19775";
+        String str = "afc47bb699c44409b5ca23144e7256f0";
         System.out.println(Math.abs(str.hashCode()%100));
     }
 
