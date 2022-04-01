@@ -6,11 +6,14 @@ import com.ranlay.core.utils.RandomUtil;
 import com.ranlay.core.utils.RegexUtils;
 import com.ranlay.core.utils.StringUtil;
 import com.ranlay.pojo.User;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * @author: Ranlay.su
@@ -88,5 +91,13 @@ public class MyApplicationTests {
                 .value("{}")
                 .build();
         System.out.println("user: " + JSON.toJSONString(jack));
+    }
+
+    @Test
+    public void testJsoup() {
+        String content = "<div><a data-type=\"@\" data-value=\"1030040673097613319\" rel=\"noopener noreferrer\">@E16372070.asd</a>   come on!</div>";
+        String clean = Jsoup.clean(content, Safelist.simpleText());
+        System.out.println(content);
+        System.out.println(clean);
     }
 }
