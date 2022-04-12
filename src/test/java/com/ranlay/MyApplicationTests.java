@@ -1,6 +1,7 @@
 package com.ranlay;
 
 import com.alibaba.fastjson.JSON;
+import com.ranlay.core.model.req.msg.MsgSystemNoticeReqDTO;
 import com.ranlay.core.utils.DigestUtil;
 import com.ranlay.core.utils.RandomUtil;
 import com.ranlay.core.utils.RegexUtils;
@@ -13,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.IntStream;
 
 /**
  * @author: Ranlay.su
@@ -54,6 +54,82 @@ public class MyApplicationTests {
         String REGEX_TAG_AT = "<a data-type=\"@\" data-value=\"(\\d+)\"( rel=\"noopener noreferrer\"){0,1}>";
         List<String> matchValue = RegexUtils.matchValue(REGEX_TAG_AT, content);
         System.out.println(matchValue);
+        String REGEX_THREAD = ".*/thread\\?id=(\\d+)";
+        String jumpUrl = "https://communitytest.wanyol.com/thread?id=860172952307499011";
+        matchValue = RegexUtils.matchValue(REGEX_THREAD, jumpUrl);
+        System.out.println(matchValue);
+    }
+
+    @Test
+    public void testMsgDateMigrate() {
+        List<MsgSystemNoticeReqDTO> lists = getMsgSystemNoticeLists();
+        System.out.println(JSON.toJSONString(lists));
+        lists.forEach(dto -> {
+            formatMsgSystemNotice(dto);
+        });
+        System.out.println(JSON.toJSONString(lists));
+    }
+
+    /**
+     * 获取消息列表
+     * @return
+     */
+    private List<MsgSystemNoticeReqDTO> getMsgSystemNoticeLists() {
+        List<MsgSystemNoticeReqDTO> data = new ArrayList<>();
+        // 帖子审核不通过
+        data.add(MsgSystemNoticeReqDTO.builder()
+                .type(1)
+                .jumpUrl("https://communitytest.wanyol.com/thread?id=860172952307499011")
+                .build());
+
+        // 用户资料审核不通过
+        data.add(MsgSystemNoticeReqDTO.builder()
+                .type(1)
+                .jumpUrl("https://communitytest.wanyol.com/user-main/2086814084/index")
+                .build());
+
+        // 关注
+        data.add(MsgSystemNoticeReqDTO.builder()
+                .type(2)
+                .jumpUrl("https://communitytest.wanyol.com/user-main/2086653950/index")
+                .build());
+
+        return data;
+    }
+
+    /**
+     * 解析消息
+     * @param dto
+     */
+    private void formatMsgSystemNotice(MsgSystemNoticeReqDTO dto) {
+        Integer type = dto.getType();
+        String jumpUrl = dto.getJumpUrl();
+        String REGEX_USER = ".*/user-main/(\\d+)/.*";
+        List<String> matchValue = RegexUtils.matchValue(REGEX_USER, jumpUrl);
+        if (!matchValue.isEmpty()) {
+            dto.setType(type == 2 ? 10 : 4);
+            dto.setJumpUrl(this.getJumpUrl(dto.getJumpUrl(), "/user-main"));
+            dto.setContentId(Long.parseLong(matchValue.get(0)));
+            return;
+        }
+        String REGEX_THREAD = ".*/thread\\?id=(\\d+)";
+        matchValue = RegexUtils.matchValue(REGEX_THREAD, jumpUrl);
+        if (!matchValue.isEmpty()) {
+            dto.setJumpUrl(this.getJumpUrl(dto.getJumpUrl(), "/thread?id="));
+            dto.setContentId(Long.parseLong(matchValue.get(0)));
+            return;
+        }
+    }
+
+    /**
+     * 获取url
+     * @param jumpUrl
+     * @param search
+     * @return
+     */
+    private String getJumpUrl(String jumpUrl, String search) {
+        int i = jumpUrl.indexOf(search);
+        return jumpUrl.substring(i);
     }
 
     @Test
