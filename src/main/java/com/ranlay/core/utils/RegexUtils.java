@@ -25,4 +25,17 @@ public class RegexUtils {
         }
         return values;
     }
+
+    public static List<String> matchGroupValue(String regex, String content) {
+        Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = p.matcher(content);
+        List<String> values = new ArrayList<>();
+        while (matcher.find()) {
+            int max = matcher.groupCount();
+            for (int i = 1; i <= max; i++) {
+                values.add(matcher.group(i));
+            }
+        }
+        return values;
+    }
 }

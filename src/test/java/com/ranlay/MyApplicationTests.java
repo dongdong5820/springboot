@@ -50,13 +50,28 @@ public class MyApplicationTests {
 
     @Test
     public void testMatchValue() {
+        String REGEX_TAG_AT;
+        List<String> matchValue;
         String content = "<div><a data-type=\"@\" data-value=\"159874569\" rel=\"noopener noreferrer\">@春笋测试</a> cvnjjggffhhjjhhgg</div>";
-        String REGEX_TAG_AT = "<a data-type=\"@\" data-value=\"(\\d+)\"( rel=\"noopener noreferrer\"){0,1}>";
-        List<String> matchValue = RegexUtils.matchValue(REGEX_TAG_AT, content);
+        REGEX_TAG_AT = "<a data-type=\"@\" data-value=\"(\\d+)\"( rel=\"noopener noreferrer\"){0,1}>";
+        matchValue = RegexUtils.matchValue(REGEX_TAG_AT, content);
         System.out.println(matchValue);
         String REGEX_THREAD = ".*/thread\\?id=(\\d+)";
         String jumpUrl = "https://communitytest.wanyol.com/thread?id=860172952307499011";
         matchValue = RegexUtils.matchValue(REGEX_THREAD, jumpUrl);
+        System.out.println(matchValue);
+        String url = "/comment?tid=1030045736880832512&cid=1030047643259109379&rid=0";
+        REGEX_TAG_AT = "tid=(\\d+)&cid=(\\d+)&rid=(\\d+)";
+        matchValue = RegexUtils.matchGroupValue(REGEX_TAG_AT, url);
+        if (matchValue.size() == 3) {
+            String tid = matchValue.get(0);
+            String cid = matchValue.get(1);
+            Long rid = Long.valueOf(matchValue.get(2));
+            String deepLink = rid.equals(0L) ?
+                    String.format("/app/comment?threadId=%s&commentId=%s", tid, cid) :
+                    String.format("/app/comment?replyId=%s&commentId=%s", rid, cid);
+            System.out.println(deepLink);
+        }
         System.out.println(matchValue);
     }
 
