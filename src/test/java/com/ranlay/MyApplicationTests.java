@@ -6,6 +6,7 @@ import com.ranlay.core.utils.DigestUtil;
 import com.ranlay.core.utils.RandomUtil;
 import com.ranlay.core.utils.RegexUtils;
 import com.ranlay.core.utils.StringUtil;
+import com.ranlay.pojo.Person;
 import com.ranlay.pojo.User;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
@@ -41,6 +42,9 @@ public class MyApplicationTests {
         String str = "projects/oneplus-community/messages/0:1636028290551095%4ebccc2f4ebccc2f";
         String value = "/";
 
+        // null不是String的实例, 返回false
+        System.out.println(null instanceof String);
+
         String s = StringUtil.lastSubstring(str, value);
         System.out.println(s);
 
@@ -53,9 +57,13 @@ public class MyApplicationTests {
         String REGEX_TAG_AT;
         List<String> matchValue;
         String content = "<div><a data-type=\"@\" data-value=\"159874569\" rel=\"noopener noreferrer\">@春笋测试</a> cvnjjggffhhjjhhgg</div>";
-        REGEX_TAG_AT = "<a data-type=\"@\" data-value=\"(\\d+)\"( rel=\"noopener noreferrer\"){0,1}>";
+        REGEX_TAG_AT = "<a data-type=\"@\" data-value=\"(\\d+)\"( style=\"display:inline-block;\"){0,1}( rel=\"noopener noreferrer\"){0,1}>";
         matchValue = RegexUtils.matchValue(REGEX_TAG_AT, content);
         System.out.println(matchValue);
+        content = "<div><p>121212</p><p> <a data-type=\"@\" data-value=\"1048723605303590917\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@J1650437429415</a>  come on</p><p> <a data-type=\"@\" data-value=\"2086780564\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@Hurricane_T</a>  come too.</p></div>";
+        matchValue = RegexUtils.matchValue(REGEX_TAG_AT, content);
+        System.out.println(matchValue);
+
         String REGEX_THREAD = ".*/thread\\?id=(\\d+)";
         String jumpUrl = "https://communitytest.wanyol.com/thread?id=860172952307499011";
         matchValue = RegexUtils.matchValue(REGEX_THREAD, jumpUrl);
@@ -182,13 +190,43 @@ public class MyApplicationTests {
                 .value("{}")
                 .build();
         System.out.println("user: " + JSON.toJSONString(jack));
+
+        List<Person> personList = this.getPersonList();
+        String personStr = JSON.toJSONString(personList);
+        System.out.println("personList: " + personStr);
+
+        List<Person> people = JSON.parseArray(personStr, Person.class);
+        System.out.println(people);
+    }
+
+    private List<Person> getPersonList() {
+        List<Person> personList = new ArrayList<>();
+        Person p1 = new Person();
+        p1.setId(1L);
+        p1.setName("Jack");
+        personList.add(p1);
+
+        Person p2 = new Person();
+        p2.setId(2L);
+        p2.setName("Lucy");
+        personList.add(p2);
+
+        return personList;
     }
 
     @Test
     public void testJsoup() {
         String content = "<div><a data-type=\"@\" data-value=\"1030040673097613319\" rel=\"noopener noreferrer\">@E16372070.asd</a>   come on!</div>";
         String clean = Jsoup.clean(content, Safelist.simpleText());
+//        System.out.println(content);
+//        System.out.println(clean);
+
+        content = "<div><p> <a data-type=\"@\" data-value=\"2086855474\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@lijule-14446317317</a>    这是一篇短文本 帖子</p></div>";
+        clean = Jsoup.clean(Jsoup.parse(content).text(), Safelist.simpleText());
+        String substring = clean.substring(0, 21);
         System.out.println(content);
         System.out.println(clean);
+        System.out.println(clean.length());
+        System.out.println(substring);
     }
 }
