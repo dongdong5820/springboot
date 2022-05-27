@@ -48,8 +48,19 @@ public class MyApplicationTests {
         String s = StringUtil.lastSubstring(str, value);
         System.out.println(s);
 
-        String format = String.format("%d-%d", 12, "哈哈哈");
-        System.out.println(format);
+//        s = "[OnePlus Community]Task reward";
+        s = "[OnePlus Community]Task reward\"First like on a thread\"";
+//        s = "[OnePlus Community]Task reward\"First \"like\" on a thread\"";
+        String pattern = "\\[OnePlus Community\\](Task reward|Point reward|Point deduction|Raffle reward|Raffle deduction)(\\\")?";
+        String d = s.replaceAll(pattern, "");
+        System.out.println(d);
+        if (!StringUtil.isEmpty(d)) {
+            d = d.substring(0, d.length() -1);
+        }
+        System.out.println(d);
+
+//        String format = String.format("%d-%d", 12, "哈哈哈");
+//        System.out.println(format);
     }
 
     @Test
@@ -200,18 +211,19 @@ public class MyApplicationTests {
     }
 
     private List<Person> getPersonList() {
-        List<Person> personList = new ArrayList<>();
-        Person p1 = new Person();
-        p1.setId(1L);
-        p1.setName("Jack");
-        personList.add(p1);
-
-        Person p2 = new Person();
-        p2.setId(2L);
-        p2.setName("Lucy");
-        personList.add(p2);
-
-        return personList;
+        return Collections.emptyList();
+//        List<Person> personList = new ArrayList<>();
+//        Person p1 = new Person();
+//        p1.setId(1L);
+//        p1.setName("Jack");
+//        personList.add(p1);
+//
+//        Person p2 = new Person();
+//        p2.setId(2L);
+//        p2.setName("Lucy");
+//        personList.add(p2);
+//
+//        return personList;
     }
 
     @Test
@@ -221,12 +233,25 @@ public class MyApplicationTests {
 //        System.out.println(content);
 //        System.out.println(clean);
 
-        content = "<div><p> <a data-type=\"@\" data-value=\"2086855474\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@lijule-14446317317</a>    这是一篇短文本 帖子</p></div>";
-        clean = Jsoup.clean(Jsoup.parse(content).text(), Safelist.simpleText());
+        content = "<div><p> <a data-type=\"@\" data-value=\"2086855474\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@lijule-14446317317</a>  这是一篇短文本 帖子</p></div>hello & world !!! < xxx >";
+//        content = "<div>hahahha</div>, hello & world !!! < xxx >";
+//        clean = Jsoup.clean(Jsoup.parse(content).text(), Safelist.simpleText());
+        clean = Jsoup.parse(Jsoup.clean(content, Safelist.simpleText())).text();
         String substring = clean.substring(0, 21);
         System.out.println(content);
         System.out.println(clean);
         System.out.println(clean.length());
         System.out.println(substring);
     }
+
+    @Test
+    public void testOptional() {
+        Long id = 2L;
+        Optional<Person> first = this.getPersonList().stream().filter(item -> item.getId().equals(id)).findFirst();
+        String name = first.isPresent() ? first.get().getName() : null;
+        System.out.println(name);
+        System.out.println(StringUtil.isEmpty(name));
+    }
+
+
 }

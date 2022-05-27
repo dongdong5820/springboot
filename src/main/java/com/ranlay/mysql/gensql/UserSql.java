@@ -25,9 +25,9 @@ public class UserSql extends AbstractSql {
 //                "user_thread_index"
 //                "user",
 //                "user_ssoid_index",
-//                "nickname_uniq",
+                "nickname_uniq",
                 "user_count",
-//                "user_thread_index"
+                "user_thread_index"
         };
 
         UserSql model = new UserSql(database, tableNames);

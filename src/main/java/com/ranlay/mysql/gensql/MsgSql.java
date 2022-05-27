@@ -23,5 +23,23 @@ public class MsgSql extends AbstractSql {
         MsgSql model = new MsgSql(database, tableNames);
         // 清空数据
         model.cleanUpData();
+        // 清空特殊表
+        MsgSql.cleanUpSpecialData();
+    }
+
+    private static void cleanUpSpecialData() {
+        String[] years = new String[]{"2022"};
+        String[] months = new String[]{"01","02","03","04","05","06","07","08","09","10","11","12"};
+        // push_history 表
+        for (String year : years) {
+            for (int i = 1; i <= 12; i++) {
+                String month = String.format("%s_%s", year, i);
+                String sql = String.format("TRUNCATE TABLE `push_history_%s`;", month);
+                System.out.println(sql);
+            }
+        }
+        // push_office_message
+        String sql = String.format("TRUNCATE TABLE `push_office_message`;");
+        System.out.println(sql);
     }
 }
