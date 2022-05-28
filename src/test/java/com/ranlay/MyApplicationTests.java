@@ -38,6 +38,20 @@ public class MyApplicationTests {
     }
 
     @Test
+    public void testTypeConversion() {
+        // 基本数据类型转换
+//        long a = 10; int b = (int) a;
+//        System.out.println(b);
+        int a = 10; long b = (long) a;
+        System.out.println(b);
+        // 包装类型转换
+        Long m = 10L; Integer n = Integer.valueOf(m.intValue());
+        System.out.println(n);
+        Integer i = 10; Long j = Long.valueOf(i.longValue());
+        System.out.println(j);
+    }
+
+    @Test
     public void testStringFunc() {
         String str = "projects/oneplus-community/messages/0:1636028290551095%4ebccc2f4ebccc2f";
         String value = "/";
@@ -252,6 +266,4 @@ public class MyApplicationTests {
         System.out.println(name);
         System.out.println(StringUtil.isEmpty(name));
     }
-
-
 }
