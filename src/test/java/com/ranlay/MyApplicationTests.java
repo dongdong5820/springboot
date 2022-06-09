@@ -2,12 +2,10 @@ package com.ranlay;
 
 import com.alibaba.fastjson.JSON;
 import com.ranlay.core.model.req.msg.MsgSystemNoticeReqDTO;
-import com.ranlay.core.utils.DigestUtil;
-import com.ranlay.core.utils.RandomUtil;
-import com.ranlay.core.utils.RegexUtils;
-import com.ranlay.core.utils.StringUtil;
+import com.ranlay.core.utils.*;
 import com.ranlay.pojo.Person;
 import com.ranlay.pojo.User;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 import org.junit.jupiter.api.Test;
@@ -222,6 +220,16 @@ public class MyApplicationTests {
 
         List<Person> people = JSON.parseArray(personStr, Person.class);
         System.out.println(people);
+
+        List<Long> oldUidList = new ArrayList<>();
+        oldUidList.add(123456L);
+//        String uids = "[12569874,569874563]";
+        String uids = "[]";
+        List<Long> uidList = JSON.parseArray(uids, Long.class);
+        System.out.println(uidList);
+        System.out.println(CollectionUtils.isEmpty(uidList));
+        oldUidList.addAll(uidList);
+        System.out.println(oldUidList);
     }
 
     private List<Person> getPersonList() {
@@ -265,5 +273,30 @@ public class MyApplicationTests {
         String name = first.isPresent() ? first.get().getName() : null;
         System.out.println(name);
         System.out.println(StringUtil.isEmpty(name));
+    }
+
+    @Test
+    public void testBitOperation() {
+        BitOperationUtil.run();
+    }
+
+    /**
+     * 数据库分表键
+     */
+    @Test
+    public void testChatPrivateGroupSharding() {
+        // 评论主键缓存key
+        //        String str = "1074912972346753027_1084102950805045250";
+//        String str = "1074912972346753027_1084103038692491266";
+        String str = "1074912972346753027_1084964277807218692";
+        System.out.println(DigestUtils.md5Hex(str));
+
+        // 私信分组key
+        Long fuid = 1067640179318063107L;
+        Long tuid = 1345690597L;
+        Long uidBig = Math.max(fuid, tuid);
+        Long uidLittle = Math.min(fuid, tuid);
+        int i = ((uidLittle.hashCode() + uidBig.hashCode()) >>> 1) % 100;
+        System.out.println(i);
     }
 }
