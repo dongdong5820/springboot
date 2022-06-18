@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author: Ranlay.su
@@ -233,19 +234,18 @@ public class MyApplicationTests {
     }
 
     private List<Person> getPersonList() {
-        return Collections.emptyList();
-//        List<Person> personList = new ArrayList<>();
-//        Person p1 = new Person();
-//        p1.setId(1L);
-//        p1.setName("Jack");
-//        personList.add(p1);
-//
-//        Person p2 = new Person();
-//        p2.setId(2L);
-//        p2.setName("Lucy");
-//        personList.add(p2);
-//
-//        return personList;
+//        return Collections.emptyList();
+        List<Person> personList = new ArrayList<>();
+        Person p1 = new Person(1L, "Jack");
+        personList.add(p1);
+
+        Person p2 = new Person(2L, "Lucy");
+        personList.add(p2);
+
+        Person p3 = new Person(1L, "Jack");
+        personList.add(p3);
+
+        return personList;
     }
 
     @Test
@@ -280,6 +280,34 @@ public class MyApplicationTests {
         BitOperationUtil.run();
     }
 
+    @Test
+    public void testToMap() {
+        // Integer 越界处理
+        String str = "[69696969699696,5689]";
+        List<String> list = JSON.parseArray(str, String.class);
+        List<Integer> uidList = new ArrayList<>();
+        for (String s : list) {
+            try {
+                Integer integer = Integer.valueOf(s);
+                uidList.add(integer);
+            } catch (Exception e) {
+                System.out.println(s);
+            }
+        }
+        System.out.println(list);
+        System.out.println(uidList);
+
+        List<Person> personList = this.getPersonList();
+        System.out.println(personList);
+        List<Long> userIds = personList.stream().map(Person::getId).collect(Collectors.toList());
+        System.out.println(userIds);
+        userIds = userIds.stream().distinct().collect(Collectors.toList());
+        System.out.println(userIds);
+        // 列表中有重复对象，转map时会报 Duplicate key xxx
+//        Map<Long, String> map = personList.stream().collect(Collectors.toMap(Person::getId, a -> a.getName()));
+//        System.out.println(map);
+    }
+
     /**
      * 数据库分表键
      */
@@ -288,7 +316,7 @@ public class MyApplicationTests {
         // 评论主键缓存key
         //        String str = "1074912972346753027_1084102950805045250";
 //        String str = "1074912972346753027_1084103038692491266";
-        String str = "1074912972346753027_1084964277807218692";
+        String str = "865_30286";
         System.out.println(DigestUtils.md5Hex(str));
 
         // 私信分组key
@@ -298,5 +326,10 @@ public class MyApplicationTests {
         Long uidLittle = Math.min(fuid, tuid);
         int i = ((uidLittle.hashCode() + uidBig.hashCode()) >>> 1) % 100;
         System.out.println(i);
+
+        // push_mac_token 分组key
+        String mac = "45381996e93d42bbbd53667f85ead46b";
+        int a = mac.hashCode() % 100;
+        System.out.println(a);
     }
 }
