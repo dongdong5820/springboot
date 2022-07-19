@@ -3,6 +3,8 @@ package com.ranlay;
 import com.alibaba.fastjson.JSON;
 import com.ranlay.core.model.req.msg.MsgSystemNoticeReqDTO;
 import com.ranlay.core.utils.*;
+import com.ranlay.pojo.AddFeedbackRespDTO;
+import com.ranlay.pojo.FileUrlDTO;
 import com.ranlay.pojo.Person;
 import com.ranlay.pojo.User;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -48,6 +50,8 @@ public class MyApplicationTests {
         System.out.println(n);
         Integer i = 10; Long j = Long.valueOf(i.longValue());
         System.out.println(j);
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "Jack");
     }
 
     @Test
@@ -85,6 +89,9 @@ public class MyApplicationTests {
         matchValue = RegexUtils.matchValue(REGEX_TAG_AT, content);
         System.out.println(matchValue);
         content = "<div><p>121212</p><p> <a data-type=\"@\" data-value=\"1048723605303590917\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@J1650437429415</a>  come on</p><p> <a data-type=\"@\" data-value=\"2086780564\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@Hurricane_T</a>  come too.</p></div>";
+        matchValue = RegexUtils.matchValue(REGEX_TAG_AT, content);
+        System.out.println(matchValue);
+        content = "<div><p><a data-type=\"@\" data-value=\"1034172527573991430\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@Zach X.</a> , <a data-type=\"@\" data-value=\"1034172533739880452\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@dsmonteiro</a> , <a data-type=\"@\" data-value=\"1034172554585309184\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@YRJ</a> , <a data-type=\"@\" data-value=\"1034172540895100931\" style=\"display:inline-block;\" rel=\"noopener noreferrer\">@Cheetosdust</a> </p><p> </p><p>More and more people ask what to do with the issues they have and how to report them. Since the new forums, there is no feedback section yet, we only can assume bug hunters read along and jump in where necessary. But assumptions didn’t build the Eifel tower.</p><p> </p><p>I know that a feedback section is planned for August and I do hope it will be ready by then but what about people wanting to report the bugs and issues they are facing now? Post them somewhere or create a thread and hope it gets picked up? I don’t think this is the way to go.</p><p> </p><p>With all the new updates and the issues, people are facing for whatever reason, I think there should be a temporary procedure that works for all regions. We can’t wait for a month to give feedback or send logs, the present procedures are already vague as it is. </p><p> </p><p>Could someone please look into this and let us know?</p></div>";
         matchValue = RegexUtils.matchValue(REGEX_TAG_AT, content);
         System.out.println(matchValue);
 
@@ -231,6 +238,15 @@ public class MyApplicationTests {
         System.out.println(CollectionUtils.isEmpty(uidList));
         oldUidList.addAll(uidList);
         System.out.println(oldUidList);
+
+        // json字符串比实体字段多
+        String json = "{\"feedbackId\":1085786080406405123,\"feedbackType\":1,\"feedbackContent\":\"fasdfaf\",\"userId\":\"2086633222\",\"processStatus\":1,\"createTime\":1652066516}";
+        AddFeedbackRespDTO addFeedbackRespDTO = JSON.parseObject(json, AddFeedbackRespDTO.class);
+        System.out.println(addFeedbackRespDTO);
+        // json字符串比实体字段少
+        json = "{\"ocsKey\":\"ece7be6f-0fe1-4ee7-bc73-269de4ce8e2b\",\"url\":\"http://s3.ap-southeast-1.amazonaws.com/fms-manage-files/ece7be6f-0fe1-4ee7-bc73-269de4ce8e2b?AWSAccessKeyId=AKIAUYUFOQPYAF2BXTMF&Expires=1657787027&Signature=vc3h6SFFIZCYtemvdR7MumkDWLU%3D\"}";
+        FileUrlDTO fileUrlDTO = JSON.parseObject(json, FileUrlDTO.class);
+        System.out.println(fileUrlDTO);
     }
 
     private List<Person> getPersonList() {
@@ -309,10 +325,24 @@ public class MyApplicationTests {
     }
 
     /**
+     * 测试集合
+     */
+    @Test
+    public void testCollection() {
+        // set集合
+        Set<Long> uidSet = new HashSet<>();
+        System.out.println(uidSet.add(1083617868524814353L));
+        System.out.println(uidSet.add(1083617862602457098L));
+        System.out.println(uidSet.add(1083617681005871109L));
+        System.out.println(uidSet.add(1083617868524814353L));
+        System.out.println(uidSet);
+    }
+
+    /**
      * 数据库分表键
      */
     @Test
-    public void testChatPrivateGroupSharding() {
+    public void testTableSharding() {
         // 评论主键缓存key
         //        String str = "1074912972346753027_1084102950805045250";
 //        String str = "1074912972346753027_1084103038692491266";
@@ -331,5 +361,22 @@ public class MyApplicationTests {
         String mac = "45381996e93d42bbbd53667f85ead46b";
         int a = mac.hashCode() % 100;
         System.out.println(a);
+    }
+
+    /**
+     * feedback系统的sign
+     */
+    @Test
+    public void testFeedback() {
+        String appId = "oneplus-community";
+        String appSecret = "f38fsj845kgfsu9i";
+        String lang = "en";
+        long ts = System.currentTimeMillis() / 1000;
+        String url = "/api/feedback/getUploadSign";
+        String plainText = String.format("%s%s%s", url, ts, appSecret);
+        System.out.println(plainText);
+        String sign = DigestUtils.sha256Hex(plainText);
+        String format = String.format("appId:%s\nlang:%s\nts:%s\nsign:%s", appId, lang, ts, sign);
+        System.out.println(format);
     }
 }
